@@ -1,0 +1,5 @@
+Flask
+langchain-community
+langchain-groq
+tensorflow
+Flask-Cors
