@@ -4,3 +4,4 @@ langchain-groq
 tensorflow
 Flask-Cors
 gunicorn
+pillow
