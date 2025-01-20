@@ -107,6 +107,7 @@ def home():
 @async_route
 async def predictRoute():
     try:
+        clApp = ClientApp()
         # Decode the incoming image
         image = request.json['image']
         decodeImage(image, clApp.filename)
@@ -147,5 +148,4 @@ async def predictRoute():
         }), 500
 
 if __name__ == "__main__":
-    clApp = ClientApp()
     app.run(host='0.0.0.0', port=10000)
