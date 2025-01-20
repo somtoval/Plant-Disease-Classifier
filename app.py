@@ -29,7 +29,7 @@ class ClientApp:
         self.chat = ChatGroq(
             temperature=0.3,
             # groq_api_key=os.getenv('GROQ_API_KEY'),
-            groq_api_key = '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'
+            groq_api_key = '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',
             model_name="llama3-8b-8192"
         )
         self.setup_prompt()
