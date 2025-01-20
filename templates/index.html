@@ -488,7 +488,7 @@
                     });
 
                     // Make request to backend
-                    const response = await fetch('http://localhost:8080/predict', {  // Update URL to match backend
+                    const response = await fetch('/predict', {  // Update URL to match backend
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
