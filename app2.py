@@ -24,7 +24,7 @@ class ClientApp:
     def __init__(self):
         self.filename = "InputImage.jpg"
         # Load the Keras model
-        self.classifier = tf.keras.models.load_model('plant_disease_model (1).keras')
+        self.classifier = tf.keras.models.load_model('plant_disease_classifier.keras')
         # Initialize Groq LLM
         self.chat = ChatGroq(
             temperature=0.3,
@@ -33,8 +33,6 @@ class ClientApp:
             model_name="llama3-8b-8192"
         )
         self.setup_prompt()
-        # Define confidence threshold
-        self.confidence_threshold = 0.5  # 50% confidence threshold
 
     def setup_prompt(self):
         """Set up a single prompt template for plant analysis"""
@@ -123,31 +121,21 @@ async def predictRoute():
         # Predict using the model
         predictions = clApp.classifier.predict(img_array)
         predicted_class = np.argmax(predictions[0])
-        max_confidence = float(predictions[0][predicted_class])
-        
-        # Check if confidence is below threshold
-        if max_confidence < clApp.confidence_threshold:
-            result = {
-                "prediction": "Unknown Plant",
-                "explanation": "This doesn't appear to be an image of a potato, pepper, or tomato leaf. The model's confidence is too low for a reliable diagnosis. Please ensure you're uploading a clear image of a potato, pepper, or tomato plant leaf.",
-                "confidence": f'{max_confidence*100:.2f}%'
-            }
-        else:
-            # Process as normal for high confidence predictions
-            predicted_label = list(class_name_map.values())[predicted_class]
-            
-            # Get analysis from LLM
-            analysis = await clApp.get_analysis(predicted_label)
-            
-            # Format confidence score
-            confidence = f'{max_confidence*100:.2f}%'
-            
-            # Prepare the result
-            result = {
-                "prediction": f'{predicted_label} ({confidence})',
-                "explanation": analysis,
-                "confidence": confidence
-            }
+        predicted_label = list(class_name_map.values())[predicted_class]
+
+        # Get analysis from LLM
+        analysis = await clApp.get_analysis(predicted_label)
+
+        # Confidence Score
+        confidence = float(predictions[0][predicted_class])*100
+        confidence = f'{confidence:.2f}%'
+
+        # Prepare the result
+        result = {
+            "prediction": f'{predicted_label} ({confidence})',
+            "explanation": analysis,
+            "confidence": confidence
+        }
         
         print('Prediction Result:', result)
         return jsonify(result)
