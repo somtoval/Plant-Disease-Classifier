@@ -24,7 +24,7 @@ class ClientApp:
     def __init__(self):
         self.filename = "InputImage.jpg"
         # Load the Keras model
-        self.classifier = tf.keras.models.load_model('plant_disease_model (1).keras')
+        self.classifier = tf.keras.models.load_model('plant_disease_classifier_model.keras')
         # Initialize Groq LLM
         self.chat = ChatGroq(
             temperature=0.3,
@@ -34,7 +34,7 @@ class ClientApp:
         )
         self.setup_prompt()
         # Define confidence threshold
-        self.confidence_threshold = 0.5  # 50% confidence threshold
+        self.confidence_threshold = 0.97  # 50% confidence threshold
 
     def setup_prompt(self):
         """Set up a single prompt template for plant analysis"""
