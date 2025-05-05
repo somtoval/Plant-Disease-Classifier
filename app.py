@@ -34,7 +34,7 @@ class ClientApp:
         )
         self.setup_prompt()
         # Define confidence threshold
-        self.confidence_threshold = 0.97  # 50% confidence threshold
+        self.confidence_threshold = 0.7  # 50% confidence threshold
 
     def setup_prompt(self):
         """Set up a single prompt template for plant analysis"""
